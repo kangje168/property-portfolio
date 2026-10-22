@@ -1,0 +1,6 @@
+external_id,name,address,city,property_type,bedrooms,price_eur,latitude,longitude
+DEMO-001,Bois apartment,10 rue Exemple,Vincennes,apartment,2,450000.10,48.844,2.435
+DEMO-002,River house,20 quai Imaginaire,Saint-Maur-des-Fossés,house,4,890000.00,48.797,2.512
+DEMO-003,Office east,30 avenue Fictive,Noisiel,office,0,650000.00,48.852,2.619
+DEMO-BAD,Rejected record,40 rue Exemple,Vincennes,apartment,2,-50,48.845,2.436
+

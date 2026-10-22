@@ -1,0 +1,40 @@
+services:
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: portfolio
+      POSTGRES_USER: portfolio
+      POSTGRES_PASSWORD: ${PORTFOLIO_DB_PASSWORD:?Set a local database password in .env}
+    volumes:
+      - portfolio-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U portfolio -d portfolio"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+  migrate:
+    build: .
+    environment:
+      PORTFOLIO_DATABASE_URL: postgresql+psycopg://portfolio:${PORTFOLIO_DB_PASSWORD}@db:5432/portfolio
+    depends_on:
+      db:
+        condition: service_healthy
+    command: ["portfolio", "migrate"]
+  api:
+    build: .
+    environment:
+      PORTFOLIO_DATABASE_URL: postgresql+psycopg://portfolio:${PORTFOLIO_DB_PASSWORD}@db:5432/portfolio
+      PORTFOLIO_RATE_LIMIT: "120"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    ports:
+      - "127.0.0.1:8000:8000"
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+volumes:
+  portfolio-data:
+

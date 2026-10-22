@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "property-portfolio"
+version = "0.1.0"
+description = "Validated property intake, scoped search and geofencing API"
+requires-python = ">=3.11"
+dynamic = ["dependencies"]
+license = "MIT"
+license-files = ["LICENSE"]
+
+[project.scripts]
+portfolio = "portfolio.cli:main"
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[tool.setuptools.packages.find]
+include = ["portfolio*"]
+
+[tool.setuptools.package-data]
+portfolio = ["migrations/*.py", "migrations/versions/*.py"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
